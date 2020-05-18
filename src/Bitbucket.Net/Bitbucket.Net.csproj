@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net452;netstandard1.4</TargetFrameworks>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <PackageId>Bitbucket.Net</PackageId>
     <Authors>Luk Vermeulen</Authors>
     <Company>Luk Vermeulen</Company>
