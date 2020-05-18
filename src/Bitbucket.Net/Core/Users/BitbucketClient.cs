@@ -72,7 +72,6 @@ namespace Bitbucket.Net
         public async Task<User> GetUserAsync(string userSlug)
         {
             return await GetUsersUrl($"/{userSlug}")
-                .SetQueryParam("avatarSize", "64")
                 .GetJsonAsync<User>()
                 .ConfigureAwait(false);
         }
