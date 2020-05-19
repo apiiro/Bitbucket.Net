@@ -34,29 +34,42 @@ namespace Bitbucket.Net
         private readonly Func<string> _getToken;
         private readonly string _userName;
         private readonly string _password;
+        private readonly FlurlClient _flurlClient;
 
-        private BitbucketClient(string url)
+        private BitbucketClient(string url, bool trustSsl)
         {
             _url = url;
+            
+            var httpClientHandler = new HttpClientHandler();
+            if (trustSsl)
+            {
+                httpClientHandler.ServerCertificateCustomValidationCallback = (_, __, ___, ____) => true;
+            }
+            var httpClient = new HttpClient(httpClientHandler);
+            _flurlClient = new FlurlClient(httpClient);
         }
 
-        public BitbucketClient(string url, string userName, string password)
-            : this(url)
+        public BitbucketClient(string url, string userName, string password, bool trustSsl)
+            : this(url, trustSsl)
         {
             _userName = userName;
             _password = password;
         }
 
-        public BitbucketClient(string url, Func<string> getToken)
-            : this(url)
+        public BitbucketClient(string url, Func<string> getToken, bool trustSsl)
+            : this(url, trustSsl)
         {
             _getToken = getToken;
         }
 
-        private IFlurlRequest GetBaseUrl(string root = "/api", string version = "1.0") => new Url(_url)
-            .AppendPathSegment($"/rest{root}/{version}")
-            .ConfigureRequest(settings => settings.JsonSerializer = s_serializer)
-            .WithAuthentication(_getToken, _userName, _password);
+        private IFlurlRequest GetBaseUrl(string root = "/api", string version = "1.0")
+        {
+            var url = new Url(_url)
+                .AppendPathSegment($"/rest{root}/{version}");
+            return _flurlClient.Request(url)
+                .ConfigureRequest(settings => settings.JsonSerializer = s_serializer)
+                .WithAuthentication(_getToken, _userName, _password);
+        }
 
         private async Task<TResult> ReadResponseContentAsync<TResult>(HttpResponseMessage responseMessage, Func<string, TResult> contentHandler = null)
         {

@@ -13,7 +13,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>bitbucket</PackageTags>
     <PackageIconUrl>https://i.imgur.com/OsDAzyV.png</PackageIconUrl>
-    <LangVersion>7</LangVersion>
+    <LangVersion>8</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\Bitbucket.Net.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
