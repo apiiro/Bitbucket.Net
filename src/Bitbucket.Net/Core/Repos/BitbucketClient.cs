@@ -20,7 +20,7 @@ namespace Bitbucket.Net
             string name = null,
             string projectName = null,
             Permissions? permission = null,
-            bool isPublic = false)
+            bool? isPublic = null)
         {
             var queryParamValues = new Dictionary<string, object>
             {
@@ -28,9 +28,12 @@ namespace Bitbucket.Net
                 ["start"] = start,
                 ["name"] = name,
                 ["projectname"] = projectName,
-                ["permission"] = BitbucketHelpers.PermissionToString(permission),
-                ["visibility"] = isPublic ? "public" : "private"
+                ["permission"] = BitbucketHelpers.PermissionToString(permission)
             };
+            if (isPublic.HasValue)
+            {
+                queryParamValues["visibility"] = isPublic.Value ? "public" : "private";
+            }
 
             return await GetPagedResultsAsync(maxPages, queryParamValues, async qpv =>
                 await GetReposUrl()
