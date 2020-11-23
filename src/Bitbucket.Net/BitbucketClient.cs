@@ -66,6 +66,11 @@ namespace Bitbucket.Net
         {
             var url = new Url(_url)
                 .AppendPathSegment($"/rest{root}/{version}");
+            return GetRequest(url);
+        }
+
+        private IFlurlRequest GetRequest(Url url)
+        {
             return _flurlClient.Request(url)
                 .ConfigureRequest(settings => settings.JsonSerializer = s_serializer)
                 .WithAuthentication(_getToken, _userName, _password);
