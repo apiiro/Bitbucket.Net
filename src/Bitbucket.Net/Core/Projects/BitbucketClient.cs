@@ -310,6 +310,13 @@ namespace Bitbucket.Net
                 .ConfigureAwait(false);
         }
 
+        public async Task<RepositorySize> GetProjectRepositorySizeAsync(string projectKey, string repositorySlug)
+        {
+            return await GetRequest(_url.AppendPathSegment($"projects/{projectKey}/repos/{repositorySlug}/sizes"))
+                .GetJsonAsync<RepositorySize>()
+                .ConfigureAwait(false);
+        }
+
         public async Task<RepositoryFork> CreateProjectRepositoryForkAsync(string projectKey, string repositorySlug, string targetProjectKey = null, string targetSlug = null, string targetName = null)
         {
             var data = new
