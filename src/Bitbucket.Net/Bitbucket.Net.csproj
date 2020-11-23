@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <PackageId>Bitbucket.Net</PackageId>
-    <Authors>Luk Vermeulen</Authors>
-    <Company>Luk Vermeulen</Company>
+    <PackageId>Apiiro.Bitbucket.Net</PackageId>
+    <Authors>Apiiro</Authors>
+    <Company>Apiiro</Company>
     <Product>Bitbucket.Net</Product>
     <Copyright>Copyright 2018 by Luk Vermeulen. All rights reserved.</Copyright>
     <PackageLicenseUrl>https://github.com/lvermeulen/Bitbucket.Net/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/lvermeulen/Bitbucket.Net</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/lvermeulen/Bitbucket.Net</RepositoryUrl>
+    <RepositoryUrl>https://github.com/apiiro/Bitbucket.Net</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>bitbucket</PackageTags>
     <PackageIconUrl>https://i.imgur.com/OsDAzyV.png</PackageIconUrl>
