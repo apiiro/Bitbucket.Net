@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Bitbucket.Net.Common;
@@ -36,11 +37,11 @@ namespace Bitbucket.Net
         private readonly string _password;
         private readonly FlurlClient _flurlClient;
 
-        private BitbucketClient(string url, bool trustSsl)
+        private BitbucketClient(string url, bool trustSsl, IWebProxy proxy = null)
         {
             _url = url;
-            
-            var httpClientHandler = new HttpClientHandler();
+
+            var httpClientHandler = new HttpClientHandler {Proxy = proxy};
             if (trustSsl)
             {
                 httpClientHandler.ServerCertificateCustomValidationCallback = (_, __, ___, ____) => true;
@@ -49,15 +50,15 @@ namespace Bitbucket.Net
             _flurlClient = new FlurlClient(httpClient);
         }
 
-        public BitbucketClient(string url, string userName, string password, bool trustSsl)
-            : this(url, trustSsl)
+        public BitbucketClient(string url, string userName, string password, bool trustSsl, IWebProxy proxy = null)
+            : this(url, trustSsl, proxy)
         {
             _userName = userName;
             _password = password;
         }
 
-        public BitbucketClient(string url, Func<string> getToken, bool trustSsl)
-            : this(url, trustSsl)
+        public BitbucketClient(string url, Func<string> getToken, bool trustSsl, IWebProxy proxy = null)
+            : this(url, trustSsl, proxy)
         {
             _getToken = getToken;
         }
