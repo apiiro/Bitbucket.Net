@@ -37,11 +37,11 @@ namespace Bitbucket.Net
         private readonly string _password;
         private readonly FlurlClient _flurlClient;
 
-        private BitbucketClient(string url, bool trustSsl, IWebProxy proxy = null)
+        private BitbucketClient(string url, bool trustSsl, IWebProxy proxy = null, bool allowHttpAutoRedirect = false)
         {
             _url = url;
 
-            var httpClientHandler = new HttpClientHandler { Proxy = proxy, AllowAutoRedirect = false };
+            var httpClientHandler = new HttpClientHandler { Proxy = proxy, AllowAutoRedirect = allowHttpAutoRedirect };
             if (trustSsl)
             {
                 httpClientHandler.ServerCertificateCustomValidationCallback = (_, __, ___, ____) => true;
