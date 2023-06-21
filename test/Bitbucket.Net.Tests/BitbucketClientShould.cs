@@ -14,7 +14,7 @@ namespace Bitbucket.Net.Tests
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
 
-            _client = new BitbucketClient(configuration["url"], configuration["username"], configuration["password"]);
+            _client = new BitbucketClient(configuration["url"], configuration["username"], configuration["password"], false);
         }
     }
 }

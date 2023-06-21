@@ -9,6 +9,7 @@
         public bool Forkable { get; set; }
         public bool Public { get; set; }
         public CloneLinks Links { get; set; }
+        public string DefaultBranch { get; set; }
 
         public override string ToString() => Name;
     }
