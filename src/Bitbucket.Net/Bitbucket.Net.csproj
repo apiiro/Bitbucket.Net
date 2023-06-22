@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <PackageId>Apiiro.Bitbucket.Net</PackageId>
-    <Version>1.0.6</Version>
+    <Version>1.0.7</Version>
     <Authors>Apiiro</Authors>
     <Company>Apiiro</Company>
     <Product>Bitbucket.Net</Product>
