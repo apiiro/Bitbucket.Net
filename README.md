@@ -3,6 +3,8 @@
 
 To push to apiiro nuget package:
 
+Update version in Bitbucket.Net.csproj and then:
+
 ```bash
 cd src/Bitbucket.Net
 dotnet pack --configuration Release

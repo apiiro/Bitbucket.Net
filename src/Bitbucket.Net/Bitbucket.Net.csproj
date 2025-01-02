@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <PackageId>Apiiro.Bitbucket.Net</PackageId>
-    <Version>1.0.7</Version>
+    <Version>1.0.9</Version>
     <Authors>Apiiro</Authors>
     <Company>Apiiro</Company>
     <Product>Bitbucket.Net</Product>
