@@ -37,33 +37,40 @@ namespace Bitbucket.Net
         private readonly string _password;
         private readonly FlurlClient _flurlClient;
 
-        private BitbucketClient(string url, bool trustSsl, IWebProxy proxy = null, bool allowHttpAutoRedirect = false)
+        private BitbucketClient(string url, FlurlClient flurlClient, string userName = null, string password = null, Func<string> getToken = null)
         {
             _url = url;
+            _flurlClient = flurlClient;
+            _userName = userName;
+            _password = password;
+            _getToken = getToken;
+        }
 
-            var httpClientHandler = new HttpClientHandler { Proxy = proxy, AllowAutoRedirect = allowHttpAutoRedirect };
+        public static BitbucketClient CreateWithDefaultClient(string url, string userName = null, string password = null, Func<string> getToken = null, bool trustSsl = false, IWebProxy proxy = null, bool allowHttpAutoRedirect = false)
+        {
+            var httpClientHandler = new HttpClientHandler
+            {
+                Proxy = proxy,
+                AllowAutoRedirect = allowHttpAutoRedirect
+            };
             if (trustSsl)
             {
                 httpClientHandler.ServerCertificateCustomValidationCallback = (_, __, ___, ____) => true;
             }
 
             var httpClient = new HttpClient(httpClientHandler);
-            _flurlClient = new FlurlClient(httpClient);
-            _flurlClient.Settings.Redirects.Enabled = true;
-            _flurlClient.Settings.Redirects.ForwardAuthorizationHeader = true;
-            _flurlClient.Settings.Redirects.AllowSecureToInsecure = true;
+            var flurlClient = new FlurlClient(httpClient);
+            flurlClient.Settings.Redirects.Enabled = true;
+            flurlClient.Settings.Redirects.ForwardAuthorizationHeader = true;
+            flurlClient.Settings.Redirects.AllowSecureToInsecure = true;
+
+            return new BitbucketClient(url, flurlClient, userName, password, getToken);
         }
 
-        public BitbucketClient(string url, string userName, string password, bool trustSsl, IWebProxy proxy = null)
-            : this(url, trustSsl, proxy)
+        public static BitbucketClient CreateWithCustomClient(string url, FlurlClient flurlClient, string userName = null, string password = null, Func<string> getToken = null)
         {
-            _userName = userName;
-            _password = password;
+            return new BitbucketClient(url, flurlClient, userName, password, getToken);
         }
-
-        public BitbucketClient(string url, Func<string> getToken, bool trustSsl, IWebProxy proxy = null)
-            : this(url, trustSsl, proxy)
-            => _getToken = getToken;
 
         private IFlurlRequest GetBaseUrl(string root = "/api", string version = "1.0")
         {
