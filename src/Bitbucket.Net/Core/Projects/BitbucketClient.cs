@@ -83,7 +83,7 @@ namespace Bitbucket.Net
         public async Task<Project> GetProjectAsync(string projectKey)
         {
             var response = await GetProjectsUrl($"/{projectKey}")
-                .GetJsonAsync()
+                .GetAsync()
                 .ConfigureAwait(false);
 
             return await HandleResponseAsync<Project>(response).ConfigureAwait(false);

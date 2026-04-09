@@ -8,7 +8,7 @@ using Bitbucket.Net.Common;
 using Bitbucket.Net.Common.Models;
 using Flurl;
 using Flurl.Http;
-using Flurl.Http.Configuration;
+using Flurl.Http.Newtonsoft;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -16,11 +16,11 @@ namespace Bitbucket.Net
 {
     public partial class BitbucketClient
     {
-        private static readonly ISerializer s_serializer = new NewtonsoftJsonSerializer(new JsonSerializerSettings
+        private static readonly JsonSerializerSettings s_jsonSettings = new JsonSerializerSettings
         {
             ContractResolver = new CamelCasePropertyNamesContractResolver(),
             NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore
-        });
+        };
 
         static BitbucketClient()
         {
@@ -60,9 +60,13 @@ namespace Bitbucket.Net
 
             var httpClient = new HttpClient(httpClientHandler);
             var flurlClient = new FlurlClient(httpClient);
-            flurlClient.Settings.Redirects.Enabled = true;
-            flurlClient.Settings.Redirects.ForwardAuthorizationHeader = true;
-            flurlClient.Settings.Redirects.AllowSecureToInsecure = true;
+            flurlClient.WithSettings(s =>
+            {
+                s.Redirects.Enabled = true;
+                s.Redirects.ForwardAuthorizationHeader = true;
+                s.Redirects.AllowSecureToInsecure = true;
+                s.JsonSerializer = new NewtonsoftJsonSerializer(s_jsonSettings);
+            });
 
             return new BitbucketClient(url, flurlClient, userName, password, getToken);
         }
@@ -82,13 +86,12 @@ namespace Bitbucket.Net
         private IFlurlRequest GetRequest(Url url)
         {
             return _flurlClient.Request(url)
-                .ConfigureRequest(settings => settings.JsonSerializer = s_serializer)
                 .WithAuthentication(_getToken, _userName, _password);
         }
 
         private async Task<TResult> ReadResponseContentAsync<TResult>(IFlurlResponse responseMessage, Func<string, TResult> contentHandler = null)
         {
-            string content = await responseMessage.GetJsonAsync().ConfigureAwait(false);
+            string content = await responseMessage.GetStringAsync().ConfigureAwait(false);
             return contentHandler != null
                 ? contentHandler(content)
                 : JsonConvert.DeserializeObject<TResult>(content);
