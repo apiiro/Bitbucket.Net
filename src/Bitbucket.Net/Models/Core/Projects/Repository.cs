@@ -8,6 +8,7 @@
         public string StatusMessage { get; set; }
         public bool Forkable { get; set; }
         public bool Public { get; set; }
+        public bool Archived { get; set; }
         public CloneLinks Links { get; set; }
         public string DefaultBranch { get; set; }
 
