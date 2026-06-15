@@ -16,20 +16,11 @@ namespace Bitbucket.Net
 {
     public partial class BitbucketClient
     {
-        private static readonly JsonSerializerSettings s_jsonSettings = new JsonSerializerSettings
+        internal static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings
         {
             ContractResolver = new CamelCasePropertyNamesContractResolver(),
             NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore
         };
-
-        static BitbucketClient()
-        {
-            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
-            {
-                ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore
-            };
-        }
 
         private readonly Url _url;
         private readonly Func<string> _getToken;
@@ -65,7 +56,7 @@ namespace Bitbucket.Net
                 s.Redirects.Enabled = true;
                 s.Redirects.ForwardAuthorizationHeader = true;
                 s.Redirects.AllowSecureToInsecure = true;
-                s.JsonSerializer = new NewtonsoftJsonSerializer(s_jsonSettings);
+                s.JsonSerializer = new NewtonsoftJsonSerializer(SerializerSettings);
             });
 
             return new BitbucketClient(url, flurlClient, userName, password, getToken);
@@ -94,7 +85,7 @@ namespace Bitbucket.Net
             string content = await responseMessage.GetStringAsync().ConfigureAwait(false);
             return contentHandler != null
                 ? contentHandler(content)
-                : JsonConvert.DeserializeObject<TResult>(content);
+                : JsonConvert.DeserializeObject<TResult>(content, SerializerSettings);
         }
 
         private async Task<bool> ReadResponseContentAsync(IFlurlResponse responseMessage)
