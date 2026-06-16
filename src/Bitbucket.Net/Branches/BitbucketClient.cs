@@ -69,7 +69,7 @@ namespace Bitbucket.Net
 
             var response = await GetBranchUrl($"/projects/{projectKey}/repos/{repositorySlug}/branches")
                 .WithHeader("Content-Type", "application/json")
-                .SendAsync(HttpMethod.Delete, new StringContent(JsonConvert.SerializeObject(data)))
+                .SendAsync(HttpMethod.Delete, new StringContent(JsonConvert.SerializeObject(data, SerializerSettings)))
                 .ConfigureAwait(false);
 
             return await HandleResponseAsync(response).ConfigureAwait(false);

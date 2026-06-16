@@ -27,7 +27,7 @@ namespace Bitbucket.Net
         {
             var response =  await GetKeysUrl($"/ssh/{keyId}")
                 .WithHeader("Content-Type", "application/json")
-                .SendAsync(HttpMethod.Delete, new StringContent(JsonConvert.SerializeObject(projectsOrRepos)))
+                .SendAsync(HttpMethod.Delete, new StringContent(JsonConvert.SerializeObject(projectsOrRepos, SerializerSettings)))
                 .ConfigureAwait(false);
 
             return await HandleResponseAsync(response).ConfigureAwait(false);

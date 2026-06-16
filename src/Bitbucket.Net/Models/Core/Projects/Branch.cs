@@ -30,15 +30,15 @@ namespace Bitbucket.Net.Models.Core.Projects
                 {
                     if (metadata.Name.ToString() == "com.atlassian.bitbucket.server.bitbucket-branch:ahead-behind-metadata-provider")
                     {
-                        _branchMetadata.AheadBehind = JsonConvert.DeserializeObject<AheadBehindMetaData>(metadata.Value.ToString());
+                        _branchMetadata.AheadBehind = JsonConvert.DeserializeObject<AheadBehindMetaData>(metadata.Value.ToString(), BitbucketClient.SerializerSettings);
                     }
                     else if (metadata.Name.ToString() == "com.atlassian.bitbucket.server.bitbucket-build:build-status-metadata")
                     {
-                        _branchMetadata.BuildStatus = JsonConvert.DeserializeObject<BuildStatusMetadata>(metadata.Value.ToString());
+                        _branchMetadata.BuildStatus = JsonConvert.DeserializeObject<BuildStatusMetadata>(metadata.Value.ToString(), BitbucketClient.SerializerSettings);
                     }
                     else if (metadata.Name.ToString() == "com.atlassian.bitbucket.server.bitbucket-ref-metadata:outgoing-pull-request-metadata")
                     {
-                        _branchMetadata.OutgoingPullRequest = JsonConvert.DeserializeObject<PullRequestMetadata>(metadata.Value.ToString());
+                        _branchMetadata.OutgoingPullRequest = JsonConvert.DeserializeObject<PullRequestMetadata>(metadata.Value.ToString(), BitbucketClient.SerializerSettings);
                     }
                 }
 
